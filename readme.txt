@@ -1,4 +1,4 @@
-=== Ut Experts ===
+=== UT Experts ===
 Contributors:      The University of Tennessee, Knoxville
 Tags:              block
 Tested up to:      6.8

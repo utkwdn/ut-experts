@@ -29,3 +29,9 @@ function utkwds_experts_ut_experts_block_init() {
 	wp_register_block_types_from_metadata_collection( __DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php' );
 }
 add_action( 'init', 'utkwds_experts_ut_experts_block_init' );
+
+
+/**
+ * Import custom post type / taxonomies file.
+ */
+require_once plugin_dir_path( __FILE__ ) . 'src/inc/cpt-taxes-and-fields.php';
