@@ -31,7 +31,7 @@ function ut_experts_register_cpts() {
 	$args = array(
 		'labels'                => $labels,
 		'description'           => '',
-		'public'                => false,
+		'public'                => true,
 		'publicly_queryable'    => true,
 		'show_ui'               => true,
 		'show_in_rest'          => true,
@@ -42,13 +42,16 @@ function ut_experts_register_cpts() {
 		'show_in_menu'          => true,
 		'show_in_nav_menus'     => true,
 		'delete_with_user'      => false,
-		'exclude_from_search'   => true,
+		'exclude_from_search'   => false,
 		'capability_type'       => 'post',
 		'map_meta_cap'          => true,
 		'hierarchical'          => false,
 		'can_export'            => false,
-		'rewrite'               => false,
-		'query_var'             => false,
+		'rewrite'               => array(
+			'slug'       => 'experts',
+			'with_front' => false,
+		),
+		'query_var'             => 'expert',
 		'menu_icon'             => 'dashicons-id',
 		'supports'              => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
 	);

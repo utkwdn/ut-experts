@@ -36,3 +36,27 @@ add_action( 'init', 'utkwds_experts_ut_experts_block_init' );
  */
 require_once plugin_dir_path( __FILE__ ) . 'inc/cpt-taxes-and-fields.php';
 require_once plugin_dir_path( __FILE__ ) . 'inc/manage-experts-page.php';
+
+
+/**
+ * Add template for expert single.
+ */
+function ut_experts_register_templates() {
+
+	if ( ! function_exists( 'register_block_template' ) ) {
+		return;
+	}
+
+	register_block_template(
+		'ut-experts//single-expert',
+		array(
+			'title'       => 'Single Expert',
+			'description' => 'Template for Expert profiles',
+			'content'     => file_get_contents(
+				plugin_dir_path( __FILE__ ) . 'templates/single-expert.html'
+			),
+			'post_types'  => array( 'expert' ),
+		)
+	);
+}
+add_action( 'init', 'ut_experts_register_templates' );
