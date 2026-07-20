@@ -1,15 +1,22 @@
 <?php
 /**
- * PHP file to use when rendering the block type on the server to show on the front end.
- *
- * The following variables are exposed to the file:
- *     $attributes (array): The block attributes.
- *     $content (string): The block default content.
- *     $block (WP_Block): The block instance.
+ * Render callback for the Expert Search block.
  *
  * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
+ *
+ * @package UtkwdsExperts
  */
-?>
-<p <?php echo get_block_wrapper_attributes(); ?>>
-	<?php esc_html_e( 'Ut Experts – hello from a dynamic block!', 'ut-experts' ); ?>
-</p>
+
+if ( ! function_exists( 'expert_search_render_callback' ) ) {
+	/**
+	 * Render the Expert Search block.
+	 *
+	 * @return string Rendered HTML.
+	 */
+	function expert_search_render_callback() {
+		return '<div class="areasContainer alignfull" id="filters"></div>';
+	}
+}
+
+// Output the rendered HTML.
+echo wp_kses_post( expert_search_render_callback() );
