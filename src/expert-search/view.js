@@ -71,6 +71,11 @@ export default function View() {
 
 				const formattedExperts = data.map((expert) => {
 					const name = expert.title.rendered;
+					let firstName = 'expert';
+					if (typeof name === 'string' && name.trim() !== '') {
+						const nameParts = name.trim().split(/\s+/);
+						firstName = nameParts[0];
+					}
 					const title = expert.acf?.['expert_title'] || '';
 					const excerpt = expert.excerpt.rendered;
 					const areas =
@@ -103,6 +108,7 @@ export default function View() {
 					return {
 						id: expert.id,
 						name,
+						firstName,
 						title,
 						excerpt,
 						areas,
@@ -165,7 +171,6 @@ export default function View() {
 		apiFetch({ path: '/wp/v2/area_of_expertise?per_page=100' })
 			.then((data) => {
 				if (Array.isArray(data)) {
-					// Parents: parent === 0
 					const parents = data
 						.filter((area) => area.parent === 0)
 						.map((area) => ({
@@ -173,7 +178,6 @@ export default function View() {
 							id: area.id,
 						}));
 
-					// Children: keep a reference to their parent
 					const children = data
 						.filter((area) => area.parent !== 0)
 						.map((area) => ({
@@ -195,7 +199,7 @@ export default function View() {
 	useEffect(() => {
 		if (!areaFilter) {
 			setSubareaMap([]);
-			setSubareaFilter(''); // reset so a stale subarea doesn't persist
+			setSubareaFilter(''); // reset so subarea doesn't persist
 			updateURLParams('subarea', ''); // clear URL too
 			return;
 		}
@@ -203,8 +207,8 @@ export default function View() {
 			(sub) => sub.parent === parseInt(areaFilter)
 		);
 		setSubareaMap(children);
-		setSubareaFilter(''); // clear previous selection when the parent changes
-		updateURLParams('subarea', ''); // clear URL too
+		setSubareaFilter('');
+		updateURLParams('subarea', '');
 	}, [areaFilter, allSubareas]);
 
 	// Match area ID with name for filter chips
@@ -355,20 +359,75 @@ export default function View() {
 	};
 
 	const displayPlaceholders = (numItems = 3) => {
+		const bar = (width, height = 14) => (
+			<Placeholder animation="glow" style={{ display: 'block' }}>
+				<Placeholder style={{ width, height, borderRadius: 4 }} />
+			</Placeholder>
+		);
+
 		return (
 			<>
 				{Array.from({ length: numItems }).map((_, index) => (
-					<div key={index} className="expert-entry">
-						{Array.from({ length: 3 }).map((_, subIndex) => (
-							<ul key={subIndex} className="placeholder-list">
-								<Placeholder as="li" animation="glow">
+					<div
+						key={index}
+						className="experts-filter-result wp-block-group has-background has-global-padding"
+					>
+						<figure className="experts-filter-image wp-block-image size-full has-custom-border">
+							<Placeholder
+								animation="glow"
+								style={{ display: 'block' }}
+							>
+								<Placeholder
+									className="experts-filter-thumbnail"
+									style={{ width: '100%', aspectRatio: '1' }}
+								/>
+							</Placeholder>
+						</figure>
+
+						<div
+							className="experts-filter-header"
+							style={{ marginBottom: '20px' }}
+						>
+							{bar('35%', 24)}
+							{bar('55%', 18)}
+						</div>
+
+						<div className="experts-filter-body">
+							{bar('55%')}
+							{bar('55%')}
+							{/* {bar('45%')} */}
+
+							<div style={{ width: '50%', height: '30px' }}></div>
+
+							{bar('30%', 16)}
+
+							<div
+								className="experts-categories taxonomy-category wp-block-post-terms"
+								style={{ marginBottom: '20px' }}
+							>
+								<Placeholder animation="glow">
 									<Placeholder
-										size="lg"
-										style={{ width: `100%`, height: 32 }}
+										style={{
+											width: 60,
+											height: 24,
+											marginRight: 8,
+										}}
+									/>
+									<Placeholder
+										style={{
+											width: 70,
+											height: 24,
+											marginRight: 8,
+										}}
+									/>
+									<Placeholder
+										style={{ width: 50, height: 24 }}
 									/>
 								</Placeholder>
-							</ul>
-						))}
+							</div>
+
+							{bar('40%', 16)}
+						</div>
 					</div>
 				))}
 			</>
@@ -601,7 +660,7 @@ export default function View() {
 						id="expert-results"
 					>
 						{isLoading ? (
-							displayPlaceholders(7)
+							displayPlaceholders(3)
 						) : experts.length === 0 && !isLoading ? (
 							<div className="experts-filters-no-results">
 								<div className="experts-filters-no-results-content">
@@ -621,75 +680,60 @@ export default function View() {
 										key={expert.id}
 										className="experts-filter-result wp-block-group has-background has-global-padding"
 									>
-										<div className="experts-filter-columns wp-block-columns is-layout-flex">
-											<div className="experts-filter-column-left wp-block-column is-layout-flow">
-												<h4 className="wp-block-heading">
-													{expert.name}
-												</h4>
-
-												<p className="experts-title wp-block-paragraph">
-													<strong>
-														{expert.title}
-													</strong>
-												</p>
-
-												<div
-													className="wp-block-paragraph"
-													dangerouslySetInnerHTML={{
-														__html: expert.excerpt,
-													}}
+										{expert.expertImage && (
+											<figure className="experts-filter-image wp-block-image size-full has-custom-border">
+												<img
+													decoding="async"
+													src={expert.expertImage}
+													srcSet={
+														expert.expertImageSrcSet ||
+														undefined
+													}
+													sizes="(max-width: 600px) 100vw, 600px"
+													alt={expert.expertImageAlt}
+													className="experts-filter-thumbnail"
 												/>
+											</figure>
+										)}
 
-												<p className="wp-block-paragraph">
-													<strong>
-														Area of expertise
-													</strong>
-												</p>
+										<div className="experts-filter-header">
+											<h4 className="experts-name wp-block-heading">
+												{expert.name}
+											</h4>
+											<p className="experts-title wp-block-paragraph">
+												<strong>{expert.title}</strong>
+											</p>
+										</div>
 
-												<div className="experts-categories taxonomy-category wp-block-post-terms">
-													{expert.areas.map(
-														(area) => (
-															<a
-																key={area.id}
-																href={area.link}
-																rel="tag"
-															>
-																{decodeEntities(
-																	area.name
-																)}
-															</a>
-														)
-													)}
-												</div>
-
-												<p className="is-style-utkwds-single-link wp-block-paragraph">
-													<a href={expert.bioLink}>
-														Link to expert profile
+										<div className="experts-filter-body">
+											<div
+												className="wp-block-paragraph"
+												dangerouslySetInnerHTML={{
+													__html: expert.excerpt,
+												}}
+											/>
+											<p className="experts-area-title wp-block-paragraph">
+												Area of expertise
+											</p>
+											<div className="experts-categories taxonomy-category wp-block-post-terms">
+												{expert.areas.map((area) => (
+													<a
+														key={area.id}
+														href={area.link}
+														rel="tag"
+													>
+														{decodeEntities(
+															area.name
+														)}
 													</a>
-												</p>
+												))}
 											</div>
-
-											<div className="experts-filter-column-right wp-block-column is-layout-flow">
-												{expert.expertImage && (
-													<figure className="wp-block-image size-full has-custom-border">
-														<img
-															decoding="async"
-															src={
-																expert.expertImage
-															}
-															srcSet={
-																expert.expertImageSrcSet ||
-																undefined
-															}
-															sizes="(max-width: 600px) 100vw, 600px"
-															alt={
-																expert.expertImageAlt
-															}
-															className="experts-filter-thumbnail"
-														/>
-													</figure>
-												)}
-											</div>
+											<p className="experts-bio-link is-style-utkwds-single-link wp-block-paragraph">
+												<a href={expert.bioLink}>
+													View {expert.firstName}'s
+													Profile
+												</a>
+											</p>
 										</div>
 									</div>
 								))}
