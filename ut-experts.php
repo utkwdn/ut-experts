@@ -32,10 +32,11 @@ add_action( 'init', 'utkwds_experts_ut_experts_block_init' );
 
 
 /**
- * Import custom post type / taxonomies file.
+ * Import custom post type / taxonomies file, manage experts page and media contact page.
  */
 require_once plugin_dir_path( __FILE__ ) . 'inc/cpt-taxes-and-fields.php';
 require_once plugin_dir_path( __FILE__ ) . 'inc/manage-experts-page.php';
+require_once plugin_dir_path( __FILE__ ) . 'inc/media-contact.php';
 
 
 /**

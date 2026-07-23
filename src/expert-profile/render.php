@@ -101,8 +101,8 @@ $additional_links = array_merge(
 );
 
 // To Do: Wire up to customizer options or other setting.
-$email = 'email@utk.edu';
-$phone = '(865) 974-1001';
+$email = get_option( 'ut_experts_email', '' );
+$phone = get_option( 'ut_experts_phone', '' );
 ?>
 
 <div class="wp-block-group has-global-padding is-layout-constrained">
