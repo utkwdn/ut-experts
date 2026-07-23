@@ -135,36 +135,26 @@ export default function View() {
 
 	// Fetch data on initial page load or filter/search changes
 	useEffect(() => {
-		if (searchTimeout.current) {
-			clearTimeout(searchTimeout.current);
+		// Don't fetch with an area/subarea filter until the taxonomy list
+		// is loaded, otherwise expandAreaIds can't append child IDs.
+		if ((areaFilter || subareaFilter) && allSubareas.length === 0) {
+			return;
 		}
 
-		// Allow 500ms for user to finish typing before performing search
-		searchTimeout.current = setTimeout(() => {
-			// Cancel any incomplete fetch requests when new filter/search is initiated
-			if (fetchController.current) {
-				fetchController.current.abort(); // Cancel previous fetch
-			}
-			fetchController.current = new AbortController(); // Create new controller
-			const { signal } = fetchController.current; // Get the signal for the fetch request
+		if (searchTimeout.current) clearTimeout(searchTimeout.current);
 
+		searchTimeout.current = setTimeout(() => {
+			if (fetchController.current) fetchController.current.abort();
+			fetchController.current = new AbortController();
+			const { signal } = fetchController.current;
 			fetchExperts(currentPage, false, signal);
 		}, 500);
 
 		return () => {
-			// Cleanup searchTimeouot
-			if (searchTimeout.current) {
-				clearTimeout(searchTimeout.current);
-			}
-
-			// Abort fetch on dependency change
+			if (searchTimeout.current) clearTimeout(searchTimeout.current);
 			fetchController.current?.abort();
 		};
-	}, [searchTerm, areaFilter, subareaFilter, currentPage]);
-
-	useEffect(() => {
-		console.log('total pages: ' + totalPages);
-	}, [totalPages]);
+	}, [searchTerm, areaFilter, subareaFilter, currentPage, allSubareas]);
 
 	// Fetch area data to populate select boxes
 	useEffect(() => {
@@ -195,23 +185,34 @@ export default function View() {
 			.catch((error) => console.error('Error fetching areas:', error));
 	}, []);
 
+	const prevAreaFilter = useRef(areaFilter);
+
 	// When a parent area is selected, populate the subarea select with its children
 	useEffect(() => {
 		if (!areaFilter) {
 			setSubareaMap([]);
-			setSubareaFilter(''); // reset so subarea doesn't persist
-			updateURLParams('subarea', ''); // clear URL too
+			if (subareaFilter) {
+				setSubareaFilter('');
+				updateURLParams('subarea', '');
+			}
+			prevAreaFilter.current = areaFilter;
 			return;
 		}
+
 		const children = allSubareas.filter(
 			(sub) => sub.parent === parseInt(areaFilter)
 		);
 		setSubareaMap(children);
-		setSubareaFilter('');
-		updateURLParams('subarea', '');
+
+		// Only clear the subarea when the parent area changes.
+		if (prevAreaFilter.current !== areaFilter) {
+			setSubareaFilter('');
+			updateURLParams('subarea', '');
+		}
+		prevAreaFilter.current = areaFilter;
 	}, [areaFilter, allSubareas]);
 
-	// Match area ID with name for filter chips
+	// Match area ID with name for filter chips.
 	useEffect(() => {
 		const match = areaMap.find((obj) => obj.id === parseInt(areaFilter));
 		if (match && match.name) {
@@ -219,7 +220,7 @@ export default function View() {
 		}
 	}, [areaFilter, areaMap]);
 
-	// Match subarea ID with name for filter chips
+	// Match subarea ID with name for filter chips.
 	useEffect(() => {
 		const match = subareaMap.find(
 			(obj) => obj.id === parseInt(subareaFilter)
@@ -259,7 +260,7 @@ export default function View() {
 	}, []);
 
 	const handleFilterChange = (key, value, setter) => {
-		// Update filters for fetch and display
+		// Update filters for fetch and display.
 		setter(value);
 		updateURLParams(key, value);
 		setCurrentPage(1);
@@ -359,7 +360,7 @@ export default function View() {
 	};
 
 	const displayPlaceholders = (numItems = 3) => {
-		const bar = (width, height = 14) => (
+		const bar = (width, height) => (
 			<Placeholder animation="glow" style={{ display: 'block' }}>
 				<Placeholder style={{ width, height, borderRadius: 4 }} />
 			</Placeholder>
@@ -393,9 +394,8 @@ export default function View() {
 						</div>
 
 						<div className="experts-filter-body">
-							{bar('55%')}
-							{bar('55%')}
-							{/* {bar('45%')} */}
+							{bar('55%', 14)}
+							{bar('55%', 14)}
 
 							<div style={{ width: '50%', height: '30px' }}></div>
 
