@@ -13,10 +13,8 @@
 	margin: 0;
 	padding: 30px;
 	border-bottom: 1px solid var(--wp--preset--color--gray-2);
-}
 
-@media screen and (min-width: 960px) {
-	.expert-entry {
+	@media screen and (min-width: 960px) {
 		grid-template-columns: repeat(3, minmax(200px, 3fr));
 		grid-column-gap: 3rem;
 		padding: 3rem 2rem;
@@ -27,6 +25,7 @@
 .experts-container-banner {
 	height: 200px;
 }
+
 .experts-container {
 	@media screen and (min-width: 1170px) {
 		margin: 0px auto;
@@ -223,10 +222,8 @@ select.form-select {
 	gap: 10px;
 	margin: 0 auto 10px;
 	padding: 15px 0;
-}
 
-@media screen and (min-width: 960px) {
-	.experts-filters-chips {
+	@media screen and (min-width: 960px) {
 		padding: 15px 0;
 	}
 }
@@ -261,6 +258,10 @@ select.form-select {
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+
+		@media screen and (min-width: 960px) {
+			max-width: 300px;
+		}
 	}
 }
 
@@ -293,16 +294,8 @@ select.form-select {
 	}
 }
 
-@media screen and (min-width: 960px) {
-	.experts-filters-chip {
-		span {
-			max-width: 300px;
-		}
-	}
-}
-
 .experts-filter-result {
-	display: flow-root; /* contains the floated image within padding/background */
+	display: flow-root;
 
 	padding: 30px 20px !important;
 	border-bottom: 1px solid var(--wp--preset--color--gray-2);
@@ -337,9 +330,15 @@ select.form-select {
 
 .experts-filter-image {
 	float: right;
-	width: 250px;
-	max-width: 40%;
-	margin: 0 0 1rem 2rem;
+	width: 40%;
+	max-width: 90px;
+	margin: 0 0 1rem 1rem;
+
+	@media screen and (min-width: 600px) {
+		width: 250px;
+		max-width: 40%;
+		margin: 0 0 1rem 2rem !important;
+	}
 }
 
 .experts-filter-image img {
@@ -352,24 +351,14 @@ select.form-select {
 	object-position: 50% 5%;
 }
 
-@media (max-width: 600px) {
-	.experts-filter-image {
-		width: 40%;
-		max-width: 90px;
-		margin: 0 0 1rem 1rem;
-	}
-}
-
 .experts-filters-no-results {
 	padding: 40px 40px 30px;
 	text-align: center;
 	background: #f6f6f6;
 	border-top: 4px solid #ff8200;
 	// border-bottom: 1px solid var(--wp--preset--color--gray-2);
-}
 
-@media screen and (min-width: 960px) {
-	.experts-filters-no-results {
+	@media screen and (min-width: 960px) {
 		padding: 80px 0 70px;
 	}
 }

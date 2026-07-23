@@ -129,22 +129,13 @@ export default function Edit() {
 										Area of expertise
 									</p>
 									<div className="experts-categories taxonomy-category wp-block-post-terms">
-										<a
-											href="http://plugins.local/area_of_expertise/entertainment/"
-											rel="tag"
-										>
+										<a href="#" rel="tag">
 											Area 1
 										</a>
-										<a
-											href="http://plugins.local/area_of_expertise/journalism/"
-											rel="tag"
-										>
+										<a href="#" rel="tag">
 											Area 2
 										</a>
-										<a
-											href="http://plugins.local/area_of_expertise/media/"
-											rel="tag"
-										>
+										<a href="#" rel="tag">
 											Area 3
 										</a>
 									</div>
@@ -152,9 +143,7 @@ export default function Edit() {
 										className="experts-bio-link is-style-utkwds-single-link wp-block-paragraph"
 										style={{ marginTop: '20px' }}
 									>
-										<a href="http://plugins.local/experts/ahmad-hayat/">
-											View Expert's Profile
-										</a>
+										<a href="#">View Expert's Profile</a>
 									</p>
 								</div>
 							</div>
@@ -191,22 +180,13 @@ export default function Edit() {
 										Area of expertise
 									</p>
 									<div className="experts-categories taxonomy-category wp-block-post-terms">
-										<a
-											href="http://plugins.local/area_of_expertise/entertainment/"
-											rel="tag"
-										>
+										<a href="#" rel="tag">
 											Area 1
 										</a>
-										<a
-											href="http://plugins.local/area_of_expertise/journalism/"
-											rel="tag"
-										>
+										<a href="#" rel="tag">
 											Area 2
 										</a>
-										<a
-											href="http://plugins.local/area_of_expertise/media/"
-											rel="tag"
-										>
+										<a href="#" rel="tag">
 											Area 3
 										</a>
 									</div>
@@ -214,9 +194,7 @@ export default function Edit() {
 										className="experts-bio-link is-style-utkwds-single-link wp-block-paragraph"
 										style={{ marginTop: '20px' }}
 									>
-										<a href="http://plugins.local/experts/ahmad-hayat/">
-											View Expert's Profile
-										</a>
+										<a href="#">View Expert's Profile</a>
 									</p>
 								</div>
 							</div>
