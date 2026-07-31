@@ -1,0 +1,43 @@
+.trending-expert-group {
+	.trending-expert-figure {
+		float: right;
+		width: 40%;
+		max-width: 90px;
+		margin: 0 0 1rem 1rem;
+
+		@media screen and (min-width: 750px) {
+			width: 250px;
+			max-width: 40%;
+			margin: 0 0 1rem 2rem !important;
+		}
+
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+			border-top: 5px solid var(--wp--preset--color--orange);
+			aspect-ratio: 1;
+			object-fit: cover;
+			object-position: 50% 5%;
+		}
+	}
+
+	.trending-expert-text {
+		margin-block-start: 0;
+		gap: 0;
+
+		.trending-expert-topic {
+			text-transform: uppercase;
+		}
+
+		hr {
+			color: var(--wp--preset--color--gray-2);
+			width: 100%;
+			margin: 15px 0;
+		}
+
+		.is-style-utkwds-single-link {
+			margin-top: 30px;
+		}
+	}
+}
