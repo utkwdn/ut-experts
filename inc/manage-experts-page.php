@@ -467,6 +467,12 @@ function ut_experts_sideload_thumbnail( $url, $post_id ) {
 	$attachment_id = media_sideload_image( $url, $post_id, null, 'id' );
 	if ( ! is_wp_error( $attachment_id ) ) {
 		set_post_thumbnail( $post_id, $attachment_id );
+
+		// Set the image Alt Text to the expert's name (the post title).
+		$alt = get_the_title( $post_id );
+		if ( '' !== $alt ) {
+			update_post_meta( $attachment_id, '_wp_attachment_image_alt', sanitize_text_field( $alt ) );
+		}
 	}
 }
 
