@@ -100,7 +100,6 @@ $additional_links = array_merge(
 	utkwds_expert_term_links( $expert_post_id, 'ut_expert_center', 'expert_center_url' )
 );
 
-// To Do: Wire up to customizer options or other setting.
 $email = get_option( 'ut_experts_email', '' );
 $phone = get_option( 'ut_experts_phone', '' );
 ?>
@@ -162,10 +161,17 @@ $phone = get_option( 'ut_experts_phone', '' );
 			<div class="taxonomy-category wp-block-post-terms" style="margin-block-start: 5px;">
 				<?php
 				foreach ( $areas as $area ) :
-					$area_link = get_term_link( $area );
-					$area_href = is_wp_error( $area_link ) ? '#' : $area_link;
+					// Trying linking to expert search page first
+					$area_href = function_exists( 'utkwds_expert_area_search_url' )
+						? utkwds_expert_area_search_url( $area )
+						: '';
+					// If search page hasn't been set, fall back to linking to archive page
+					if ( '' === $area_href ) {
+						$area_link = get_term_link( $area );
+						$area_href = is_wp_error( $area_link ) ? '#' : $area_link;
+					}
 					?>
-				<a href="<?php echo esc_url( $area_href ); ?>" rel="tag"><?php echo esc_html( $area->name ); ?></a>
+				<a href="<?php echo esc_url( $area_href ); ?>"><?php echo esc_html( $area->name ); ?></a>
 				<?php endforeach; ?>
 			</div>
 			<?php endif; ?>
