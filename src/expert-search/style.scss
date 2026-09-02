@@ -6,6 +6,10 @@
 @import "~bootstrap/scss/forms";
 @import "~bootstrap/scss/placeholders";
 
+.areasContainer {
+	margin-block-end: 60px !important;
+}
+
 .expert-entry {
 	display: grid;
 	grid-template-columns: 1fr;

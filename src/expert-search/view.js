@@ -36,7 +36,7 @@ export default function View() {
 		setIsLoading(page === 1);
 		setLoadingMore(page > 1);
 
-		const baseURL = `/wp/v2/expert?_embed&search_columns=post_title&orderby=title&order=asc&per_page=${resultsPerPage}&page=${page}`;
+		const baseURL = `/wp/v2/expert?_embed&search_columns=post_title&orderby=last_name&order=asc&per_page=${resultsPerPage}&page=${page}`;
 		const urlParams = new URLSearchParams(window.location.search);
 
 		// Translate area/subarea params for API search
@@ -524,7 +524,7 @@ export default function View() {
 									name="area"
 									className="form-select"
 									id="area-of-expertise"
-									aria-label="Topic"
+									aria-label="Area"
 									onChange={(e) =>
 										handleFilterChange(
 											'area',
@@ -533,7 +533,7 @@ export default function View() {
 										)
 									}
 								>
-									<option value="">Select a topic</option>
+									<option value="">Select an area</option>
 									{areaMap.map((area) => (
 										<option
 											key={area.id}
@@ -549,7 +549,9 @@ export default function View() {
 										</option>
 									))}
 								</select>
-								<label for="area-of-expertise">Topic</label>
+								<label for="area-of-expertise">
+									Area of expertise
+								</label>
 							</div>
 						</div>
 						<div className="experts-filters-field">
@@ -559,7 +561,7 @@ export default function View() {
 									className="form-select"
 									id="subarea-of-expertise"
 									disabled={subareaMap.length === 0}
-									aria-label="Subtopic"
+									aria-label="Subarea"
 									onChange={(e) =>
 										handleFilterChange(
 											'subarea',
@@ -568,7 +570,7 @@ export default function View() {
 										)
 									}
 								>
-									<option value="">Select a subtopic</option>
+									<option value="">Select a subarea</option>
 									{subareaMap.map((subarea) => (
 										<option
 											key={subarea.id}
@@ -585,7 +587,7 @@ export default function View() {
 									))}
 								</select>
 								<label for="subarea-of-expertise">
-									Subtopic
+									Subarea
 								</label>
 							</div>
 						</div>
@@ -713,20 +715,16 @@ export default function View() {
 												}}
 											/>
 											<p className="experts-area-title wp-block-paragraph">
-												Area of expertise
+												Area of expertise:
 											</p>
 											<div className="experts-categories taxonomy-category wp-block-post-terms">
-												{expert.areas.map((area) => (
-													<a
-														key={area.id}
-														href={area.link}
-														rel="tag"
-													>
-														{decodeEntities(
+												{expert.areas
+													.map((area) =>
+														decodeEntities(
 															area.name
-														)}
-													</a>
-												))}
+														)
+													)
+													.join(', ')}
 											</div>
 											<p className="experts-bio-link is-style-utkwds-single-link wp-block-paragraph">
 												<a href={expert.bioLink}>
