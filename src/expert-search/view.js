@@ -715,7 +715,7 @@ export default function View() {
 												}}
 											/>
 											<p className="experts-area-title wp-block-paragraph">
-												Area of expertise
+												Area of expertise:
 											</p>
 											<div className="experts-categories taxonomy-category wp-block-post-terms">
 												{expert.areas
