@@ -36,7 +36,7 @@ add_action( 'init', 'utkwds_experts_ut_experts_block_init' );
  */
 require_once plugin_dir_path( __FILE__ ) . 'inc/cpt-taxes-and-fields.php';
 require_once plugin_dir_path( __FILE__ ) . 'inc/manage-experts-page.php';
-require_once plugin_dir_path( __FILE__ ) . 'inc/media-contact.php';
+require_once plugin_dir_path( __FILE__ ) . 'inc/expert-settings.php';
 require_once plugin_dir_path( __FILE__ ) . 'inc/patterns.php';
 
 

@@ -419,3 +419,37 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 	);
 
 	endif;
+
+/*
+-------------------------------------------------------------------------
+ * Set up sorting by last name.
+-------------------------------------------------------------------------
+*/
+
+/**
+ * Enable `orderby=last_name` on the expert REST endpoint.
+ */
+add_filter(
+	'rest_expert_collection_params',
+	function ( $params ) {
+		$params['orderby']['enum'][] = 'last_name';
+		return $params;
+	}
+);
+
+/**
+ * Grab the last word of the post title (the last name) to sort by.
+ */
+add_filter(
+	'posts_orderby',
+	function ( $orderby, $q ) {
+		if ( 'last_name' === $q->get( 'orderby' ) ) {
+			global $wpdb;
+			$sort_order = ( 'DESC' === strtoupper( (string) $q->get( 'order' ) ) ) ? 'DESC' : 'ASC';
+			return "SUBSTRING_INDEX({$wpdb->posts}.post_title, ' ', -1) {$sort_order}";
+		}
+		return $orderby;
+	},
+	10,
+	2
+);

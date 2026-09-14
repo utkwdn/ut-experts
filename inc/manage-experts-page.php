@@ -82,7 +82,7 @@ function ut_experts_manage_page_render() {
 			<form method="post" enctype="multipart/form-data">
 				<?php wp_nonce_field( 'ut_experts_import', 'ut_experts_import_nonce' ); ?>
 				<input type="file" name="ut_experts_csv" id="ut_experts_csv" accept=".csv,text/csv" required />
-				<?php submit_button( __( 'Import Experts', 'ut-experts' ), 'primary', 'ut_experts_import_submit' ); ?>
+				<?php submit_button( __( 'Import Experts', 'ut-experts' ), 'primary', 'ut_experts_import_submit', true ); ?>
 			</form>
 		</div>
 		<div class="expert-section" style="margin: 30px 0; padding: 0 0 20px; border-bottom: 1px solid #d4d4d4;">
@@ -91,7 +91,7 @@ function ut_experts_manage_page_render() {
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<input type="hidden" name="action" value="ut_experts_export" />
 				<?php wp_nonce_field( 'ut_experts_export', 'ut_experts_export_nonce' ); ?>
-				<?php submit_button( __( 'Export Experts', 'ut-experts' ), 'secondary', 'ut_experts_export_submit', false ); ?>
+				<?php submit_button( __( 'Export Experts', 'ut-experts' ), 'secondary', 'ut_experts_export_submit', true ); ?>
 			</form>
 		</div>
 	</div>
@@ -467,6 +467,12 @@ function ut_experts_sideload_thumbnail( $url, $post_id ) {
 	$attachment_id = media_sideload_image( $url, $post_id, null, 'id' );
 	if ( ! is_wp_error( $attachment_id ) ) {
 		set_post_thumbnail( $post_id, $attachment_id );
+
+		// Set the image Alt Text to the expert's name (the post title).
+		$alt = get_the_title( $post_id );
+		if ( '' !== $alt ) {
+			update_post_meta( $attachment_id, '_wp_attachment_image_alt', sanitize_text_field( $alt ) );
+		}
 	}
 }
 
