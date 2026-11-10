@@ -728,8 +728,7 @@ export default function View() {
 											</div>
 											<p className="experts-bio-link is-style-utkwds-single-link wp-block-paragraph">
 												<a href={expert.bioLink}>
-													View {expert.firstName}'s
-													Profile
+													View {expert.name}'s Profile
 												</a>
 											</p>
 										</div>

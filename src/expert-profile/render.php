@@ -144,9 +144,9 @@ $phone = get_option( 'ut_experts_phone', '' );
 			<p class="wp-block-paragraph" style="margin-block-start: 10px;">
 				<a href="<?php echo esc_url( $website ); ?>">
 					<?php
-					if ( '' !== $first_name ) {
+					if ( '' !== $name ) {
 						/* translators: %s: expert's first name */
-						printf( esc_html__( "View %s's full profile", 'ut-experts' ), esc_html( $first_name ) );
+						printf( esc_html__( "View %s's full profile", 'ut-experts' ), esc_html( $name ) );
 					} else {
 						esc_html_e( 'View full profile', 'ut-experts' );
 					}
@@ -161,11 +161,11 @@ $phone = get_option( 'ut_experts_phone', '' );
 			<div class="taxonomy-category wp-block-post-terms" style="margin-block-start: 5px;">
 				<?php
 				foreach ( $areas as $area ) :
-					// Trying linking to expert search page first
+					// Trying linking to expert search page first.
 					$area_href = function_exists( 'utkwds_expert_area_search_url' )
 						? utkwds_expert_area_search_url( $area )
 						: '';
-					// If search page hasn't been set, fall back to linking to archive page
+					// If search page hasn't been set, fall back to linking to archive page.
 					if ( '' === $area_href ) {
 						$area_link = get_term_link( $area );
 						$area_href = is_wp_error( $area_link ) ? '#' : $area_link;
