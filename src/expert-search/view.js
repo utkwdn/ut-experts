@@ -36,7 +36,7 @@ export default function View() {
 		setIsLoading(page === 1);
 		setLoadingMore(page > 1);
 
-		const baseURL = `/wp/v2/expert?_embed&search_columns=post_title&orderby=last_name&order=asc&per_page=${resultsPerPage}&page=${page}`;
+		const baseURL = `/wp/v2/expert?_embed&orderby=last_name&order=asc&per_page=${resultsPerPage}&page=${page}`;
 		const urlParams = new URLSearchParams(window.location.search);
 
 		// Translate area/subarea params for API search
@@ -511,10 +511,10 @@ export default function View() {
 											setSearchTerm
 										)
 									}
-									placeholder="Search by name"
+									placeholder="Search by name or keyword"
 								/>
 								<label for="expert-search">
-									Search by name
+									Search by name or keyword
 								</label>
 							</div>
 						</div>
