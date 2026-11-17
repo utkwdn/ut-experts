@@ -93,13 +93,6 @@ if ( empty( $areas ) || is_wp_error( $areas ) ) {
 	$areas = array();
 }
 
-// Combine colleges, depapartments and centers.
-$additional_links = array_merge(
-	utkwds_expert_term_links( $expert_post_id, 'ut_expert_college', 'expert_college_url' ),
-	utkwds_expert_term_links( $expert_post_id, 'ut_expert_department', 'expert_department_url' ),
-	utkwds_expert_term_links( $expert_post_id, 'ut_expert_center', 'expert_center_url' )
-);
-
 $email = get_option( 'ut_experts_email', '' );
 $phone = get_option( 'ut_experts_phone', '' );
 ?>
@@ -174,24 +167,6 @@ $phone = get_option( 'ut_experts_phone', '' );
 				<a href="<?php echo esc_url( $area_href ); ?>"><?php echo esc_html( $area->name ); ?></a>
 				<?php endforeach; ?>
 			</div>
-			<?php endif; ?>
-
-			<?php if ( ! empty( $additional_links ) ) : ?>
-			<p class="wp-block-paragraph"><strong><?php esc_html_e( 'Additional links', 'ut-experts' ); ?></strong></p>
-
-			<p class="wp-block-paragraph" style="margin-block-start: 5px;">
-				<?php
-				$rendered = array();
-				foreach ( $additional_links as $additional_link ) {
-					if ( '' !== $additional_link['url'] ) {
-						$rendered[] = '<a href="' . esc_url( $additional_link['url'] ) . '">' . esc_html( $additional_link['name'] ) . '</a>';
-					} else {
-						$rendered[] = esc_html( $additional_link['name'] );
-					}
-				}
-				echo wp_kses_post( implode( '<br />', $rendered ) );
-				?>
-			</p>
 			<?php endif; ?>
 
 			<hr class="wp-block-separator has-text-color has-gray-2-color has-alpha-channel-opacity has-gray-2-background-color has-background" style="border:none;" />
